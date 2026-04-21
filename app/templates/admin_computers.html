@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="admin-head">
+  <h1>Admin: Computers</h1>
+  <div class="row">
+    <a class="btn primary" href="/admin/computers/new">+ New Computer</a>
+    <form method="post" action="/admin/logout"><button class="btn" type="submit">Logout</button></form>
+  </div>
+</div>
+
+<div class="grid cards">
+{% for c in computers %}
+  <article class="card pc-card">
+    <img src="{{ c.image_url }}" alt="{{ c.name }}" />
+    <h3>{{ c.name }}</h3>
+    <p class="price">${{ '%.2f'|format(c.price) }}</p>
+    <p>{{ categories[c.category_code] }} | {{ 'Active' if c.is_active else 'Inactive' }}</p>
+    <div class="row">
+      <a class="btn" href="/admin/computers/{{ c.id }}/edit">Edit</a>
+      <form method="post" action="/admin/computers/{{ c.id }}/delete" onsubmit="return confirm('Delete computer?')">
+        <button class="btn danger" type="submit">Delete</button>
+      </form>
+    </div>
+  </article>
+{% endfor %}
+</div>
+{% endblock %}
