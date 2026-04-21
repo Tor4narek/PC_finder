@@ -23,7 +23,7 @@ CATEGORY_LABELS = {
     "programming": "Программирование",
     "gaming": "Игры",
     "video_editing": "Видеомонтаж",
-    "design_3d": "3D-дизайн",
+
 }
 
 CATEGORY_CODES = list(CATEGORY_LABELS.keys())

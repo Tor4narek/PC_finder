@@ -25,7 +25,7 @@ def admin_login_page(request: Request):
 @router.post("/login")
 def admin_login(request: Request, password: str = Form(...)):
     if password != settings.admin_password:
-        return templates.TemplateResponse(request, "admin_login.html", {"error": "Неверный пароль"}, status_code=401)
+        return templates.TemplateResponse(request, "admin_login.html", {"error": "Invalid password"}, status_code=401)
 
     request.session["is_admin"] = True
     return _redirect("/admin/computers")
@@ -74,7 +74,7 @@ def admin_create(
     is_active: bool = Form(False),
 ):
     if category_code not in CATEGORY_CODES:
-        raise HTTPException(status_code=400, detail="Неверная категория")
+        raise HTTPException(status_code=400, detail="Invalid category")
     form = AdminComputerForm(
         name=name,
         description=description,
@@ -98,7 +98,7 @@ def admin_create(
 def admin_edit_form(request: Request, computer_id: int, db: Session = Depends(get_db_session)):
     computer = db.get(Computer, computer_id)
     if not computer:
-        raise HTTPException(status_code=404, detail="Не найдено")
+        raise HTTPException(status_code=404, detail="Not found")
     return templates.TemplateResponse(
         request,
         "admin_computer_form.html",
@@ -126,9 +126,9 @@ def admin_edit(
 ):
     computer = db.get(Computer, computer_id)
     if not computer:
-        raise HTTPException(status_code=404, detail="Не найдено")
+        raise HTTPException(status_code=404, detail="Not found")
     if category_code not in CATEGORY_CODES:
-        raise HTTPException(status_code=400, detail="Неверная категория")
+        raise HTTPException(status_code=400, detail="Invalid category")
 
     form = AdminComputerForm(
         name=name,
@@ -153,6 +153,6 @@ def admin_edit(
 def admin_delete(computer_id: int, db: Session = Depends(get_db_session)):
     computer = db.get(Computer, computer_id)
     if not computer:
-        raise HTTPException(status_code=404, detail="Не найдено")
+        raise HTTPException(status_code=404, detail="Not found")
     delete_computer(db, computer)
     return _redirect("/admin/computers")

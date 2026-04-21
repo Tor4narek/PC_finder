@@ -16,7 +16,7 @@ def index(request: Request):
     return templates.TemplateResponse(
         request,
         "index.html",
-        {"categories": CATEGORY_LABELS, "title": "Выберите ПК под вашу задачу"},
+        {"categories": CATEGORY_LABELS, "title": "Choose a PC for your task"},
     )
 
 
@@ -27,7 +27,7 @@ def catalog(
     db: Session = Depends(get_db_session),
 ):
     if category not in CATEGORY_CODES:
-        raise HTTPException(status_code=400, detail="Неверная категория")
+        raise HTTPException(status_code=400, detail="Invalid category")
     computers = get_active_computers_by_category(db, category)
     return templates.TemplateResponse(
         request,
@@ -45,7 +45,7 @@ def catalog(
 def computer_detail(request: Request, computer_id: int, db: Session = Depends(get_db_session)):
     computer = get_computer_by_id(db, computer_id)
     if not computer or not computer.is_active:
-        raise HTTPException(status_code=404, detail="Компьютер не найден")
+        raise HTTPException(status_code=404, detail="Computer not found")
 
     return templates.TemplateResponse(
         request,
