@@ -18,12 +18,12 @@ class Settings(BaseSettings):
 settings = Settings()
 
 CATEGORY_LABELS = {
-    "office": "Office",
-    "study": "Study",
-    "programming": "Programming",
-    "gaming": "Gaming",
-    "video_editing": "Video Editing",
-    "design_3d": "3D Design",
+    "office": "Офис",
+    "study": "Учёба",
+    "programming": "Программирование",
+    "gaming": "Игры",
+    "video_editing": "Видеомонтаж",
+
 }
 
 CATEGORY_CODES = list(CATEGORY_LABELS.keys())
