@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ category_label }} PCs</h1>
+<p><a href="/">← Back</a></p>
+{% if computers %}
+<div class="grid cards">
+  {% for c in computers %}
+    <article class="card pc-card">
+      <img src="{{ c.image_url }}" alt="{{ c.name }}" />
+      <h3>{{ c.name }}</h3>
+      <p class="price">${{ '%.2f'|format(c.price) }}</p>
+      <p>{{ c.description }}</p>
+      <ul>
+        <li>CPU: {{ c.cpu }}</li>
+        <li>GPU: {{ c.gpu or 'Integrated' }}</li>
+        <li>RAM: {{ c.ram_gb }} GB</li>
+        <li>SSD: {{ c.ssd_gb }} GB</li>
+      </ul>
+      <a class="btn" href="/computers/{{ c.id }}">Details</a>
+    </article>
+  {% endfor %}
+</div>
+{% else %}
+<p>No computers found for this category.</p>
+{% endif %}
+{% endblock %}
