@@ -16,12 +16,12 @@
     const resultEl = document.getElementById('classifyResult');
     const query = (queryEl?.value || '').trim();
     if (!query) {
-      resultEl.textContent = 'Please describe your task first.';
+      resultEl.textContent = 'Сначала опишите вашу задачу.';
       return;
     }
 
     classifyBtn.disabled = true;
-    resultEl.textContent = 'Detecting category...';
+    resultEl.textContent = 'Определяем категорию...';
 
     try {
       const response = await fetch('/api/classify', {
@@ -29,12 +29,12 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query }),
       });
-      if (!response.ok) throw new Error('Request failed');
+      if (!response.ok) throw new Error('Ошибка запроса');
       const data = await response.json();
-      resultEl.textContent = `Detected: ${data.category}`;
+      resultEl.textContent = `Определено: ${data.category}`;
       window.location.href = `/catalog?category=${encodeURIComponent(data.category)}`;
     } catch (error) {
-      resultEl.textContent = 'Classification failed. Please try again.';
+      resultEl.textContent = 'Не удалось определить категорию. Попробуйте ещё раз.';
     } finally {
       classifyBtn.disabled = false;
     }

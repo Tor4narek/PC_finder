@@ -16,6 +16,7 @@ Users can:
 - SQLAlchemy + SQLite
 - Uvicorn
 - Docker + Docker Compose
+- Nginx + Let's Encrypt (Certbot)
 
 ## Categories
 Predefined category codes:
@@ -35,16 +36,39 @@ cp .env.example .env
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-## Run with Docker Compose
+## Run with Docker Compose (app + nginx + certbot)
 ```bash
 cp .env.example .env
+# update CERTBOT_EMAIL in .env
 docker compose up --build -d
 docker compose logs -f
 ```
 
 Open:
-- App: `http://localhost:8000/`
-- Admin login: `http://localhost:8000/admin/login`
+- App: `https://pcfinder.shop/`
+- Admin login: `https://pcfinder.shop/admin/login`
+
+
+## SSL setup for pcfinder.shop
+1. Point DNS A-records for `pcfinder.shop` and `www.pcfinder.shop` to your VPS IP.
+2. Start stack (nginx will run with temporary self-signed cert until Let's Encrypt is issued):
+```bash
+docker compose up --build -d
+```
+3. Request a real certificate from Let's Encrypt:
+```bash
+docker compose run --rm certbot certonly --webroot -w /var/www/certbot \
+  -d pcfinder.shop -d www.pcfinder.shop \
+  --email ${CERTBOT_EMAIL:-admin@pcfinder.shop} --agree-tos --no-eff-email
+```
+4. Reload nginx to start using the issued certificate:
+```bash
+docker compose exec nginx nginx -s reload
+```
+5. Certbot auto-renew container runs every 12h; after renew, reload nginx:
+```bash
+docker compose exec nginx nginx -s reload
+```
 
 ## Admin login
 - Admin password is read from env variable `ADMIN_PASSWORD`.

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>{{ title }}</h1>
-<p class="muted">Pick category or describe your task in free text.</p>
+<p class="muted">Выберите категорию или опишите задачу свободным текстом.</p>
 
 <div class="grid categories">
   {% for code, label in categories.items() %}
@@ -10,9 +10,9 @@
 </div>
 
 <div class="card">
-  <label for="query">Describe your needs</label>
-  <textarea id="query" placeholder="I need a computer for Word and browser"></textarea>
-  <button id="classifyBtn" class="btn primary">Classify & Show PCs</button>
+  <label for="query">Опишите ваши задачи</label>
+  <textarea id="query" placeholder="Нужен компьютер для Word и браузера"></textarea>
+  <button id="classifyBtn" class="btn primary">Определить категорию и показать ПК</button>
   <p id="classifyResult" class="muted"></p>
 </div>
 {% endblock %}

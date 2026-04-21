@@ -22,5 +22,5 @@ def list_computers(
     db: Session = Depends(get_db_session),
 ):
     if category not in CATEGORY_CODES:
-        raise HTTPException(status_code=400, detail="Invalid category")
+        raise HTTPException(status_code=400, detail="Неверная категория")
     return get_active_computers_by_category(db, category)
